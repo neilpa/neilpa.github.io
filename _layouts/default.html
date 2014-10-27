@@ -2,7 +2,19 @@
 <html lang="en">
     {% include head.html %}
     <body>
-        <h1>{{ site.title }}</h1>
-        {{ content }}
+        <div class="container">
+            <!-- TODO real header -->
+            <h4 class="header">
+                <a href="{{ site.baseurl }}">{{ site.title }}</a>
+            </h4>
+            <hr>
+
+            <!-- TODO navigation -->
+
+            <!-- Main content of the page -->
+            {{ content }}
+
+            <!-- TODO footer -->
+        </div>
     </body>
 </html>
