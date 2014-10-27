@@ -3,18 +3,19 @@
     {% include head.html %}
     <body>
         <div class="container">
-            <!-- TODO real header -->
-            <h4 class="header">
-                <a href="{{ site.baseurl }}">{{ site.title }}</a>
-            </h4>
-            <hr>
+            <header>
+                <h4><a href="{{ site.baseurl }}">{{ site.title }}</a></h4>
+                <hr>
+            </header>
 
             <!-- TODO navigation -->
 
             <!-- Main content of the page -->
             {{ content }}
 
-            <!-- TODO footer -->
+            <footer>
+                <!-- TODO footer -->
+            </footer>
         </div>
     </body>
 </html>

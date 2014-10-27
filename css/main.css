@@ -54,12 +54,13 @@ p {
   margin-right: auto;
 }
 
-/* Header - TODO */
-.header {
-  margin-top: 0.2rem;
+/* Header */
+header {
+  margin-top: 0.4rem;
+  margin-bottom: 1.5rem;
 }
 
-.header a {
+header a {
   color: #505050;
 }
 
