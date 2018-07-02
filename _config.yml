@@ -1,8 +1,8 @@
 # Dependencies
-markdown:            redcarpet
-highlighter:         pygments
+markdown: redcarpet
+highlighter: rouge
 
-permalink:           pretty
+permalink: pretty
 
 # Setup
 title: neilpa
