@@ -1,0 +1,12 @@
+# Dependencies
+highlighter: rouge
+
+permalink: pretty
+
+# Setup
+title: neilpa
+tagline: easily distracted
+baseurl: /
+
+plugins: [jekyll-paginate]
+paginate: 5
