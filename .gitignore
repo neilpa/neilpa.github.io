@@ -1,5 +1,9 @@
 # Build artifacts
 neilpa.me
 
+# Keys and certs
+*.key
+*.crt
+
 # Other projects
 py2go/
