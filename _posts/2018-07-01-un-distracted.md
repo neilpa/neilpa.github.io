@@ -1,7 +1,4 @@
----
-layout: post
-title: Un-Distracted?
----
+# Un-Distracted?
 
 It's been almost four years since setting up this blog and it's still empty. I'm sure living up to that "easily distracted" tagline.
 

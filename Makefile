@@ -35,11 +35,11 @@ local-curl:
 
 # Create a release artifact
 release:
-	@echo release: TODO
+	@echo release: TODO: create release artifact
 
 # Deploy the release artifact
 deploy:
-	@echo deploy: TODO
+	@echo deploy: TODO: push artifact to github
 
 # Remove generated artifacts
 clean:
