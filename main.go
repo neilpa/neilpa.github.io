@@ -6,8 +6,12 @@ package main
 
 import (
 	"crypto/tls"
+	"flag"
+	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
+	"path/filepath"
 	"strings"
 
 	"golang.org/x/crypto/acme/autocert"
@@ -17,10 +21,10 @@ import (
 const host = "neilpa.me"
 
 // secure requires certificates.
-var secure bool = true
+const secure bool = true
 
 // local for non-production and dev builds.
-const local = false
+var local = false
 
 // version identifies the running instance.
 var version string = "?"
@@ -28,6 +32,9 @@ var version string = "?"
 // main is the entry point to the app.
 func main() {
 	log.SetPrefix(host + ": ")
+
+	flag.BoolVar(&local, "local", false, "run local dev")
+	flag.Parse()
 
 	// TODO Local experiment
 	if local || !secure {
@@ -65,44 +72,12 @@ type API struct {
 // NewAPI creates the default API backed by the provided certs.
 func NewAPI(certs *Certs) *API {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		log.Printf("access: %s %s", r.Method, r.URL.Path)
-		var code = 200
-		var body string
+		log.Printf("access: %s %s %s", r.RemoteAddr, r.Method, r.URL.Path)
 
-		if r.Method != "GET" {
-			code = 405 // Method not allowed
-		}
-		switch r.URL.Path {
-		case "/":
-			body = "Hello world!"
-		case "/health":
-			body = "200 OK"
-		case "/status":
-			body = strings.Join([]string{
-				"version: " + version,
-				"...",
-			}, "\n")
-		case "/version":
-			body = version
-		default:
-			code = 404
-		}
+		body, code := handleRequest(r)
+		code, size := renderRequest(w, body, code)
 
-		if code >= 400 {
-			if body == "" {
-				body = http.StatusText(code)
-			}
-			http.Error(w, body, code)
-		} else {
-			if body == "" {
-				code = 204
-			}
-			w.WriteHeader(code)
-			w.Write([]byte(body))
-			w.Write([]byte("\n"))
-		}
-
-		log.Printf("result: %s %s %d %d", r.Method, r.URL.Path, code, len(body))
+		log.Printf("result: %s %s %s %d %d", r.RemoteAddr, r.Method, r.URL.Path, code, size)
 	})
 
 	if certs == nil {
@@ -141,4 +116,89 @@ func (api *API) run() {
 	// Key and cert are coming from Let's Encrypt
 	log.Printf("run: listening at %s:443\n", host)
 	log.Fatal(api.server.ListenAndServeTLS("", ""))
+}
+
+// handleRequest uses the method and path to figure out what the client wants.
+func handleRequest(r *http.Request) (body string, code int) {
+	code = 200
+
+	if r.Method != "GET" {
+		code = 405 // Method not allowed
+	}
+
+	switch r.URL.Path {
+	case "/":
+		body = "Hello world!"
+	case "/health":
+		body = "200 OK"
+	case "/search":
+		body = "TODO"
+	case "/status":
+		body = strings.Join([]string{
+			"version: " + version,
+			"...",
+		}, "\n")
+	case "/version":
+		body = version
+	default:
+		body, code = handleStatic(r)
+	}
+
+	return
+}
+
+// handleStatic looks up files, optionally without an extension via globbing.
+//
+// TODO Do smarter mapping of data
+func handleStatic(r *http.Request) (body string, code int) {
+	code = 500
+
+	pattern := filepath.Join("static", r.URL.Path) + "*"
+	matches, err := filepath.Glob(pattern)
+	if err != nil {
+		log.Printf("glob: %s: %s\n", pattern, err)
+		body = "unexpected error"
+		return
+	} else if len(matches) == 0 {
+		body, code = "not found", 404
+		return
+	}
+
+	f, err := os.Open(matches[0])
+	if err != nil {
+		log.Println("open: ", err)
+		body = "unexpected error"
+		return
+	}
+
+	b, err := ioutil.ReadAll(f)
+	if err != nil {
+		log.Printf("read: %s: %s\n", f.Name(), err)
+		body = "unexpected error"
+		return
+	}
+
+	body, code = string(b), 200
+	return
+}
+
+// renderRequest writes the body and response code in a best effort approach to
+// what the the client accepts. Under certian conditions (e.g. no content) the
+// code may be tweaked. The actual response code and size of the payload are
+// returned.
+func renderRequest(w http.ResponseWriter, body string, code int) (int, int) {
+	if code >= 400 {
+		if body == "" {
+			body = http.StatusText(code)
+		}
+		http.Error(w, body, code)
+	} else {
+		if code == 200 && body == "" {
+			code = 204
+		}
+		w.WriteHeader(code)
+		w.Write([]byte(body))
+		// TODO w.Write([]byte("\n"))
+	}
+	return code, len(body)
 }
