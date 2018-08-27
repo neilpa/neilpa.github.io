@@ -1,9 +1,13 @@
-# Build and test the site by default
-default: build test
+# Build, analyze and test the site by default
+default: build lint test
 
 # Build the site
 build:
 	go build
+
+# Run go vet (and other potential linters)
+lint:
+	go vet
 
 # Run the test suite
 test:
@@ -12,6 +16,15 @@ test:
 # Running the site locally
 local: build
 	./neilpa.me
+
+# Deploy the release artifact
+deploy: default
+	@echo deploy: TODO: push artifact to github
+	@echo deploy: TODO: ensure your running as proper user
+
+# Remove generated artifacts
+clean:
+	rm -f ./neilpa.me
 
 # Generating the key and self signed cert
 local-cert:
@@ -33,14 +46,3 @@ local-curl:
 	curl -i localhost:8080/404
 	curl -i localhost:8080/favicon.ico
 
-# Create a release artifact
-release:
-	@echo release: TODO: create release artifact
-
-# Deploy the release artifact
-deploy:
-	@echo deploy: TODO: push artifact to github
-
-# Remove generated artifacts
-clean:
-	rm -f ./neilpa.me
