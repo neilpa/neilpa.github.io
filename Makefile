@@ -19,12 +19,24 @@ local: build
 
 # Deploy the release artifact
 deploy: default
-	@echo deploy: TODO: push artifact to github
-	@echo deploy: TODO: ensure your running as proper user
+	GOOS=linux go build -o neilpa.me-linux
+	scp neilpa.me-linux neilpa.me:~/
+	ssh neilpa.me "pkill neilpa.me || true && mv neilpa.me-linux neilpa.me"
+	#ssh neilpa.me "nohup ./neilpa.me > /dev/null 2>&1 &"
+	@echo todo: figure out how to restart cleanly, manual for now
 
 # Remove generated artifacts
 clean:
 	rm -f ./neilpa.me
+
+# Running curl against a bunch of local endpoints
+local-curl:
+	curl -i localhost:8080/
+	curl -i localhost:8080/health
+	curl -i localhost:8080/status
+	curl -i localhost:8080/version
+	curl -i localhost:8080/404
+	curl -i localhost:8080/favicon.ico
 
 # Generating the key and self signed cert
 local-cert:
@@ -36,13 +48,4 @@ local-cert:
       -out local.crt \
       -days 3650 \
       -subj "/C=US/ST=Washington/L=Seattle/O=Global Security/OU=IT Department/CN=*"
-
-# Running curl against a bunch of local endpoints
-local-curl:
-	curl -i localhost:8080/
-	curl -i localhost:8080/health
-	curl -i localhost:8080/status
-	curl -i localhost:8080/version
-	curl -i localhost:8080/404
-	curl -i localhost:8080/favicon.ico
 

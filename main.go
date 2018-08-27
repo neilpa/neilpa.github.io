@@ -17,7 +17,7 @@ import (
 const host = "neilpa.me"
 
 // secure requires certificates.
-var secure bool
+var secure bool = true
 
 // local for non-production and dev builds.
 const local = false
@@ -135,8 +135,10 @@ func (api *API) run() {
 	// https://github.com/golang/go/issues/21890
 	//
 	// As a bonus of this fix we now have http-->https redirect.
+	log.Printf("run: listening at %s:80 (http redirect)\n", host)
 	go http.ListenAndServe(":http", api.certs.HTTPHandler(nil))
 
 	// Key and cert are coming from Let's Encrypt
+	log.Printf("run: listening at %s:443\n", host)
 	log.Fatal(api.server.ListenAndServeTLS("", ""))
 }
