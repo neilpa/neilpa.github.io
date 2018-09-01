@@ -1,3 +1,3 @@
 # neilpa.me
 
-The main site?
+Need to figure out the publishing strategy
