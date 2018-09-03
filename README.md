@@ -1,3 +1,5 @@
 # neilpa.me
 
-Need to figure out the publishing strategy
+Random stuff for the internets.
+
+See the [`Makefile`](Makefile) for how this works.

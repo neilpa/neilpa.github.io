@@ -140,6 +140,7 @@ func handleRequest(r *http.Request) (body string, code int) {
 		}, "\n")
 	case "/version":
 		body = version
+		// todo: site versioning vs content versioning
 	default:
 		body, code = handleStatic(r)
 	}
