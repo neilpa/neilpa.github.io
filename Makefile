@@ -13,6 +13,10 @@ lint:
 test:
 	go test -v
 
+# Publish new/updated content to the site
+publish:
+	@echo todo: push new content to the site w/out restarting
+
 # Running the site locally
 local: build
 	./neilpa.me -local

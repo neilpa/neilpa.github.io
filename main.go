@@ -127,8 +127,8 @@ func handleRequest(r *http.Request) (body string, code int) {
 	}
 
 	switch r.URL.Path {
-	case "/":
-		body = "Hello world!"
+	case "/", "/index", "/index.html", "index.php":
+		body, code = handleIndex(r)
 	case "/health":
 		body = "200 OK"
 	case "/search":
@@ -161,6 +161,7 @@ func handleStatic(r *http.Request) (body string, code int) {
 		body = "unexpected error"
 		return
 	} else if len(matches) == 0 {
+		// todo: use the net/http package mapper
 		body, code = "not found", 404
 		return
 	}
