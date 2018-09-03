@@ -14,8 +14,10 @@ test:
 	go test -v
 
 # Publish new/updated content to the site
+#   rsync: --archive --recursive --verbose --compress
 publish:
-	@echo todo: push new content to the site w/out restarting
+	scp index.md neilpa.me:~/index.md
+	rsync -arvz --progress ./static/ neilpa.me:~/static
 
 # Running the site locally
 local: build
@@ -25,10 +27,8 @@ local: build
 deploy: default
 	GOOS=linux go build -o neilpa.me-linux
 	scp neilpa.me-linux neilpa.me:~/
-	scp index.md neilpa.me:~/index.md
-	scp static/ neilpa.me:~/static/
 	ssh neilpa.me "pkill neilpa.me || true && mv neilpa.me-linux neilpa.me"
-	#ssh neilpa.me "nohup ./neilpa.me > /dev/null 2>&1 &"
+	#ssh neilpa.me "nohup ./neilpa.me >>out.txt 2>>err.txt &"
 	@echo todo: figure out how to restart cleanly, manual for now
 
 # Remove generated artifacts
