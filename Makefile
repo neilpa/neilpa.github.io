@@ -25,6 +25,7 @@ local: build
 deploy: default
 	GOOS=linux go build -o neilpa.me-linux
 	scp neilpa.me-linux neilpa.me:~/
+	scp index.md neilpa.me:~/index.md
 	scp static/ neilpa.me:~/static/
 	ssh neilpa.me "pkill neilpa.me || true && mv neilpa.me-linux neilpa.me"
 	#ssh neilpa.me "nohup ./neilpa.me > /dev/null 2>&1 &"
