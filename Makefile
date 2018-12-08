@@ -1,58 +1,19 @@
-# Build, analyze and test the site by default
-default: build lint test
+# Generate the site by default
+default: www
 
-# Build the site
-build:
-	go build
+static:
+	mkdir -p www
+	cp -pR static/* www/
 
-# Run go vet (and other potential linters)
-lint:
-	go vet
+# Run the generator and copy over static files
+blog: static
+	go run main.go
 
-# Run the test suite
-test:
-	go test -v
-
-# Publish new/updated content to the site
-#   rsync: --archive --recursive --verbose --compress
-publish:
-	scp index.md neilpa.me:~/index.md
-	rsync -arvz --progress ./static/ neilpa.me:~/static
-
-# Running the site locally
-local: build
-	./neilpa.me -local
-
-# Deploy the release artifact
-deploy: default
-	GOOS=linux go build -o neilpa.me-linux
-	scp neilpa.me-linux neilpa.me:~/
-	ssh neilpa.me "pkill neilpa.me || true && mv neilpa.me-linux neilpa.me"
-	#ssh neilpa.me "nohup ./neilpa.me >>out.txt 2>>err.txt &"
-	@echo todo: figure out how to restart cleanly, manual for now
+www: blog
+	go build -o www/run serve.go
 
 # Remove generated artifacts
 clean:
-	rm -f ./neilpa.me*
+	rm -rf ./www
 
-# Running curl against a bunch of local endpoints
-local-curl:
-	curl -i localhost:8080/
-	curl -i localhost:8080/health
-	curl -i localhost:8080/status
-	curl -i localhost:8080/version
-	curl -i localhost:8080/404
-	curl -i localhost:8080/favicon.ico
-
-# Generating the key and self signed cert
-# TODO: Look at the cert generation code in the go stdlib
-local-cert:
-	openssl req \
-      -x509 \
-      -nodes \
-      -newkey rsa:2048 \
-      -keyout local.key \
-      -out local.crt \
-      -days 3650 \
-      -subj "/C=US/ST=Washington/L=Seattle/O=Global Security/OU=IT Department/CN=*"
-
+.PHONY: clean static

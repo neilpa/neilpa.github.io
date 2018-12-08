@@ -1,206 +1,225 @@
-// neilpa.me: start of the new site
-//
-// Started from a minimal Let's Encrypt server on StackOverflow.
-// <https://stackoverflow.com/a/40494806/1999152>
 package main
 
 import (
-	"crypto/tls"
-	"flag"
+	"bytes"
+	"fmt"
+	"html/template"
+    "io"
 	"io/ioutil"
 	"log"
-	"net/http"
 	"os"
 	"path/filepath"
+	"sort"
 	"strings"
+	"time"
 
-	"golang.org/x/crypto/acme/autocert"
+	"github.com/russross/blackfriday/v2"
 )
 
-// host is the root name of the site.
-const host = "neilpa.me"
+const (
+	// postsRoot is the path to markdown posts on disk.
+	postsRoot = "posts"
+	// draftsRoot is the path to markdown drafts on disk.
+	draftsRoot = "drafs"
+	// templateRoot is the path to page templates on disk.
+	templateRoot = "templates"
+	// wwwRoot is the path to output rendered pages on disk.
+	wwwRoot = "www"
 
-// secure requires certificates.
-const secure bool = true
+	// dateLayout is the expected format of post names, prefixed with a date.
+	dateLayout = "2006-01-02-"
+)
 
-// local for non-production and dev builds.
-var local = false
+var (
+	// templateFuncs are custom display functions for templates
+	templateFuncs = map[string]interface{}{ "date": uiDate }
 
-// version identifies the running instance.
-var version string = "?"
+	// tmplPage is the standard page template. Contains the header and footer and
+	// embeds results of content rendering.
+	tmplPage = template.Must(loadTemplate("page.html"))
+)
 
-// main is the entry point to the app.
-func main() {
-	log.SetPrefix(host + ": ")
-
-	flag.BoolVar(&local, "local", false, "run local dev")
-	flag.Parse()
-
-	// TODO Local experiment
-	if local || !secure {
-		NewAPI(nil).run()
-	}
-
-	certs := NewCerts("neilpa.me")
-	NewAPI(certs).run()
+type Page struct {
+	// Path of the page on the site
+	Path string
+	// Title of the page
+	Title string
+	// Content is the rendered HTML string
+	Content template.HTML
 }
 
-// Certs wraps the certificate manager.
-type Certs struct {
-	autocert.Manager
-	// host is the name the certs validate.
-	host string
+// Post is a parsed markdown document for use on the site.
+type Post struct {
+	// Path of the post on the site
+	Path string
+	// Title of the post, extracted from the first heading.
+	Title string
+	// Date of the post, extracted from the path prefix.
+	Date time.Time
+	// Doc is the parsed markdown to be rendered.
+	Doc *blackfriday.Node
 }
 
-// NewCerts creates the default manager
-func NewCerts(host string) *Certs {
-	return &Certs{autocert.Manager{
-		Prompt:     autocert.AcceptTOS,
-		HostPolicy: autocert.HostWhitelist(host),
-		Cache:      autocert.DirCache("certs"),
-	}, host}
-}
-
-// API binds the router to the server.
-type API struct {
-	// certs is the certificate manager.
-	certs *Certs
-	// server the API is bound to.
-	server *http.Server
-}
-
-// NewAPI creates the default API backed by the provided certs.
-func NewAPI(certs *Certs) *API {
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		log.Printf("access: %s %s %s", r.RemoteAddr, r.Method, r.URL.Path)
-
-		body, code := handleRequest(r)
-		code, size := renderRequest(w, body, code)
-
-		log.Printf("result: %s %s %s %d %d", r.RemoteAddr, r.Method, r.URL.Path, code, size)
-	})
-
-	if certs == nil {
-		log.Println("warn: self-signed certs")
-		return &API{nil, nil}
-	}
-	server := &http.Server{
-		Addr: ":https",
-		TLSConfig: &tls.Config{
-			GetCertificate: certs.GetCertificate,
-		},
-	}
-	return &API{certs, server}
-}
-
-// run starts the api.
-func (api *API) run() {
-	if api.certs == nil {
-		log.Println("run: insecure: missing certs and/or server")
-		log.Println("run: listening at *:8080")
-		log.Fatal(http.ListenAndServe(":8080", nil))
-	}
-
-	if api.server == nil {
-		log.Fatal("run: server required for https")
-	}
-
-	// Needed to make http available because of letsencrypt security issue
-	// https://community.letsencrypt.org/t/important-what-you-need-to-know-about-tls-sni-validation-issues/50811
-	// https://github.com/golang/go/issues/21890
-	//
-	// As a bonus of this fix we now have http-->https redirect.
-	log.Printf("run: listening at %s:80 (http redirect)\n", host)
-	go http.ListenAndServe(":http", api.certs.HTTPHandler(nil))
-
-	// Key and cert are coming from Let's Encrypt
-	log.Printf("run: listening at %s:443\n", host)
-	log.Fatal(api.server.ListenAndServeTLS("", ""))
-}
-
-// handleRequest uses the method and path to figure out what the client wants.
-func handleRequest(r *http.Request) (body string, code int) {
-	code = 200
-
-	if r.Method != "GET" {
-		code = 405 // Method not allowed
-	}
-
-	switch r.URL.Path {
-	case "/", "/index", "/index.html", "index.php":
-		body, code = handleIndex(r)
-	case "/health":
-		body = "200 OK"
-	case "/search":
-		body = "TODO"
-	case "/status":
-		body = strings.Join([]string{
-			"version: " + version,
-			"...",
-		}, "\n")
-	case "/version":
-		body = version
-		// todo: site versioning vs content versioning
-	default:
-		body, code = handleStatic(r)
-	}
-
-	return
-}
-
-// handleStatic looks up files, optionally without an extension via globbing.
+// LoadPost reads the markdown file at path and generates a Post. The basename
+// must be prefixed with a date followed by the title.
 //
-// TODO Do smarter mapping of data
-func handleStatic(r *http.Request) (body string, code int) {
-	code = 500
+//  "path/to/file/2006-01-02-example-title.md"
+func LoadPost(path string) (*Post, error) {
+	fmt.Println("loading", path)
 
-	pattern := filepath.Join("static", r.URL.Path) + "*"
-	matches, err := filepath.Glob(pattern)
+	// TODO: make this more robust to bad names, etc.
+	base := filepath.Base(path)
+	date, err := time.Parse(dateLayout, base[:len(dateLayout)])
 	if err != nil {
-		log.Printf("glob: %s: %s\n", pattern, err)
-		body = "unexpected error"
-		return
-	} else if len(matches) == 0 {
-		// todo: use the net/http package mapper
-		body, code = "not found", 404
-		return
+		return nil, err
 	}
 
-	f, err := os.Open(matches[0])
+	buf, err := ioutil.ReadFile(path)
 	if err != nil {
-		log.Println("open: ", err)
-		body = "unexpected error"
-		return
+		return nil, err
+	}
+    exts := blackfriday.CommonExtensions | blackfriday.Footnotes
+	doc := blackfriday.New(blackfriday.WithExtensions(exts)).Parse(buf)
+
+	// Calculate the target path
+	name := strings.TrimPrefix(path, postsRoot)
+	name = strings.TrimSuffix(name, filepath.Ext(name))
+
+	// Pull title from the initial header
+	heading := doc.FirstChild
+	if heading == nil || heading.Type != blackfriday.Heading {
+		return nil, fmt.Errorf("%s: invalid title: %q", path, heading)
+	}
+	title := heading.FirstChild
+	if title == nil || len(title.Literal) == 0 {
+		return nil, fmt.Errorf("%s: empty title", path)
 	}
 
-	b, err := ioutil.ReadAll(f)
-	if err != nil {
-		log.Printf("read: %s: %s\n", f.Name(), err)
-		body = "unexpected error"
-		return
-	}
-
-	body, code = string(b), 200
-	return
+	return &Post{
+		Path:  name,
+		Title: string(title.Literal),
+		Date:  date,
+		Doc:   doc,
+	}, nil
 }
 
-// renderRequest writes the body and response code in a best effort approach to
-// what the the client accepts. Under certian conditions (e.g. no content) the
-// code may be tweaked. The actual response code and size of the payload are
-// returned.
-func renderRequest(w http.ResponseWriter, body string, code int) (int, int) {
-	if code >= 400 {
-		if body == "" {
-			body = http.StatusText(code)
+// loadPosts reads markdown files under root and converts them to posts. The
+// returned slice is in reverse chronological order.
+func loadPosts(root string) ([]*Post, error) {
+	posts := make([]*Post, 0)
+	err := filepath.Walk(root, func(p string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
 		}
-		http.Error(w, body, code)
-	} else {
-		if code == 200 && body == "" {
-			code = 204
+		if info.IsDir() {
+			return nil
 		}
-		w.WriteHeader(code)
-		w.Write([]byte(body))
-		// TODO w.Write([]byte("\n"))
-	}
-	return code, len(body)
+		post, err := LoadPost(p)
+		if err != nil {
+			return err
+		}
+		posts = append(posts, post)
+		return nil
+	})
+	sort.Slice(posts, func(i, j int) bool {
+		return posts[j].Date.Before(posts[i].Date)
+	})
+	return posts, err
 }
+
+// loadTemplate parses a template with the given name on disk, relative to
+// the templateRoot.
+func loadTemplate(name string) (*template.Template, error) {
+	path := filepath.Join(templateRoot, name)
+	buf, err := ioutil.ReadFile(path)
+	if err != nil {
+		return nil, err
+	}
+	// Have to install functions before parsing templates that use them, hence
+	// can't use ParseFiles(...) directly here and install funcs after.
+	t := template.New(name).Funcs(templateFuncs)
+	return t.Parse(string(buf))
+}
+
+// writePage renders a new page on disk relative to wwwRoot.
+func writePage(page *Page) error {
+	target := filepath.Join(wwwRoot, page.Path)
+	fmt.Println("writing", target)
+	f, err := os.Create(target)
+	if err != nil {
+		return err
+	}
+	return tmplPage.Execute(f, page)
+}
+
+// renderIndex generates the index.html for the site.
+func renderIndex(posts []*Post) error {
+	t, err := loadTemplate("index.html")
+	if err != nil {
+		return err
+	}
+	var buf bytes.Buffer
+	if err := t.Execute(&buf, posts); err != nil {
+		return err
+	}
+	return writePage(&Page{
+		Path:    "index.html",
+		Title:   "neilpa.me",
+		Content: template.HTML(buf.String()),
+	})
+}
+
+func renderTree(w io.Writer, renderer blackfriday.Renderer, node *blackfriday.Node) {
+    node.Walk(func(node *blackfriday.Node, enterring bool) blackfriday.WalkStatus {
+        return renderer.RenderNode(w, node, enterring)
+    })
+}
+
+// renderPosts generates all the post pages for the site.
+func renderPosts(posts []*Post) error {
+	params := blackfriday.HTMLRendererParameters{
+		HeadingLevelOffset: 1,
+		Flags: blackfriday.CommonHTMLFlags | blackfriday.FootnoteReturnLinks,
+	}
+	renderer := blackfriday.NewHTMLRenderer(params)
+
+	for _, p := range posts {
+		var buf bytes.Buffer
+        // HACK: simplest way to inject the date for now, h3 assumes level offest
+        title := p.Doc.FirstChild
+        renderTree(&buf, renderer, title)
+        fmt.Fprintf(&buf, "<h3 class=\"published\"><time datetime=%q>%s</time></h3>\n\n",
+            p.Date.Format(time.RFC3339), uiDate(p.Date))
+        // remainder of the document
+        title.Unlink()
+        renderTree(&buf, renderer, p.Doc)
+
+		err := writePage(&Page{
+			Path:    p.Path,
+			Title:   p.Title,
+			Content: template.HTML(buf.String()),
+		})
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func main() {
+	posts, err := loadPosts(postsRoot)
+	if err != nil {
+		log.Fatal(err)
+	}
+	if err := renderIndex(posts); err != nil {
+		log.Fatal(err)
+	}
+	if err := renderPosts(posts); err != nil {
+		log.Fatal(err)
+	}
+}
+
+func uiDate(t time.Time) string {
+	return t.Format("2006/01/02")
+}
+
