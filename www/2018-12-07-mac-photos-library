@@ -4,7 +4,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <meta http-equiv="Content-Language" content="en" />
   <meta content="width=device-width, initial-scale=1" name="viewport">
-  <title>Faces in the macOS Photos Library</title>
+  <title>Faces in the macOS photos library</title>
   <link rel="stylesheet" href="style.css" type="text/css" media="screen" />
   
 </head>
@@ -12,7 +12,8 @@
   <header>
     <h1><a href="/"><em>#</em> neilpa.me</a></h1>
   </header>
-  <h2>Faces in the macOS Photos Library</h2>
+  
+<h2>Faces in the macOS photos library</h2>
 <h3 class="published"><time datetime="2018-12-07T00:00:00Z">2018/12/07</time></h3>
 
 <p>My photo collection is a mess. Getting it  under control has proven a challenge in terms of de-dupe, metadata cleanup and just general organization. I&rsquo;ve tried numerous photo management apps and online backup strategies over the years. That&rsquo;s resulted in many different backups scattered across various thumbdrives and SD cards.</p>

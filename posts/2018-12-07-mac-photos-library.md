@@ -1,4 +1,4 @@
-# Faces in the macOS Photos Library
+# Faces in the macOS photos library
 
 My photo collection is a mess. Getting it  under control has proven a challenge in terms of de-dupe, metadata cleanup and just general organization. I've tried numerous photo management apps and online backup strategies over the years. That's resulted in many different backups scattered across various thumbdrives and SD cards.
 
