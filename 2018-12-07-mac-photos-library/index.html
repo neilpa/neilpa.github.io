@@ -13,12 +13,13 @@
 <body>
 
 <header>
-  <h1><a href="/"><em>#</em> neilpa.me</a></h1>
+  <nav><a href="/"><em>#</em> neilpa.me</a></nav>
 </header>
 
 <main>
-  <h2>Faces in the macOS photos library</h2>
-  <h3 class="published"><time datetime="2018-12-07">2018-12-07</time></h3>
+  <h1>Faces in the macOS photos library</h1>
+  <h2 class="published"><time datetime="2018-12-07">2018‑12‑07</time>
+</time></h2>
   <p>My photo collection is a mess. Getting it under control has proven a challenge in terms of de-dupe, metadata cleanup and just general organization. I&rsquo;ve tried numerous photo management apps and online backup strategies over the years. That&rsquo;s resulted in many different backups scattered across various thumbdrives and SD cards.</p>
 
 <p>One such backup is a snapshot of the <code>*.photoslibrary</code> folder from my MacBook. This is where the builtin Photos.app (formerly iPhoto) stores files and metadata. I mostly used it for syncing photos off my phone, not as an organizing tool. Nevertheless, I wanted to explore what I could extract from the archive beyond image files. In particular, any facial recognition data that was automatically generated since that was a feature of the app.</p>
@@ -28,6 +29,7 @@
 <p class="caution">CAUTION: Make a backup copy of your photo library before following along and use that. This avoids the possibility of any accidental data loss or corruption. You've been warned.</p>
 
 <p>Lets start by looking at the contents of the photo library. By default it&rsquo;s at <code>~/Pictures/Photos Library.photoslibrary</code>.</p>
+
 <pre><code>$ cd path/to/photos.photoslibrary
 $ ls
 Attachments/
@@ -38,10 +40,13 @@ Previews/
 Thumbnails/
 database/
 private/
-resources/</code></pre>
+resources/
+</code></pre>
+
 <p>The <code>Masters</code> directory is where all the originals are kept, organized by date.</p>
 
 <p><a name="tree-masters"></a></p>
+
 <pre><code>$ tree Masters | head -15
 Masters
 `-- 2016
@@ -57,8 +62,11 @@ Masters
         |       |-- Clip1.mov
         |       |-- Clip2.mov
         |       |-- DSC00001.JPG
-        |       |-- DSC00003.JPG</code></pre>
+        |       |-- DSC00003.JPG
+</code></pre>
+
 <p>What&rsquo;s more interesting for this post is the <code>database</code> directory.</p>
+
 <pre><code>$ cd database
 $ ls
 DataModelVersion.plist
@@ -69,8 +77,11 @@ Person.db
 Properties.apdb
 RKAlbum_name.skindex
 RKVersion_searchIndexText.skindex
-metaSchema.db</code></pre>
+metaSchema.db
+</code></pre>
+
 <p>Based on past experience, I&rsquo;m sure these are sqlite database files given the <code>.db</code> extensions and presence of WAL (Write-Ahead-Log) files. The <code>.apdb</code> is likely a custom extension someone at Apple made up. This can be validated with the <code>file</code> utility, the tool of choice for interrogated unknown file types.</p>
+
 <pre><code>$ file *
 DataModelVersion.plist:            XML 1.0 document, ASCII text
 ImageProxies.apdb:                 SQLite 3.x database, last written using SQLite version 3008008
@@ -80,24 +91,30 @@ Person.db:                         SQLite 3.x database, last written using SQLit
 Properties.apdb:                   SQLite 3.x database, last written using SQLite version 3008008
 RKAlbum_name.skindex:              data
 RKVersion_searchIndexText.skindex: data
-metaSchema.db:                     SQLite 3.x database, last written using SQLite version 3008008</code></pre>
+metaSchema.db:                     SQLite 3.x database, last written using SQLite version 3008008
+</code></pre>
+
 <p>It&rsquo;s interesting to note that <code>Library.apdb</code> and <code>Person.db</code> were last modified by newer versions of sqlite. That&rsquo;s relavent as these turn out to be the two databases we&rsquo;re interested in for the bulk of this post. However, before getting ahead of ourselves we should look at the structure of these databases to guide us. I&rsquo;ll stick with the standard and near ubiquitious <code>sqlite3</code> CLI tool.</p>
 
 <p>Lets start by looking at the tables in each of the databases. One approach is to load up the interactive shell and execute the appropriately named <code>.tables</code> command.</p>
+
 <pre><code>$ sqlite3
 SQLite version 3.25.1 2018-09-18 20:20:44
-Enter ".help" for usage hints.
+Enter &quot;.help&quot; for usage hints.
 Connected to a transient in-memory database.
-Use ".open FILENAME" to reopen on a persistent database.
-sqlite> .open Properties.apdb
-sqlite> .tables
+Use &quot;.open FILENAME&quot; to reopen on a persistent database.
+sqlite&gt; .open Properties.apdb
+sqlite&gt; .tables
 Array_VirtualReader          RKPlace_RTree_rowid
 RKPlace                      RKPlace_VirtualBufferReader
 RKPlace_RTree                RKPlace_modelId_RidIndex
 RKPlace_RTree_node           RidList_VirtualReader
-RKPlace_RTree_parent</code></pre>
+RKPlace_RTree_parent
+</code></pre>
+
 <p>Not much interesting in this first database. For the rest we&rsquo;ll use a shell loop over each <code>*db</code> named file since <code>sqlite3</code> accepts a database and SQL commands as arguments. The trailing <code>grep</code> is a hack to filter out a large number virtual tables and index tables of similar names that otherwise clutter the output.</p>
-<pre><code>$ for f in *db; do; echo "=== $f ==="; sqlite3 $f .tables; echo; done | grep -v '^RK.*_'
+
+<pre><code>$ for f in *db; do; echo &quot;=== $f ===&quot;; sqlite3 $f .tables; echo; done | grep -v '^RK.*_'
 === ImageProxies.apdb ===
 Array_VirtualReader
 RKCloudResource
@@ -144,8 +161,11 @@ Array_VirtualReader          RKPlace_RTree_rowid
 === metaSchema.db ===
 Array_VirtualReader    LiPropertyDef          LiTableDef
 LiGlobals              LiPropertyHistory      RidList_VirtualReader
-LiLibHistory           LiStringAtom</code></pre>
+LiLibHistory           LiStringAtom
+</code></pre>
+
 <p>The table names here seem self-descriptive. In particular, the <code>RKFace</code> table in <code>Person.db</code> looks interesting. Lets take a look at that with the <code>.schema</code> command. Again ignoring some output with <code>grep -v</code> but also using <code>tr</code> to make it more legible. The latter replaces all the commas with newlines, converting the single line <code>CREATE TABLE</code> statement into a more readable list.</p>
+
 <pre><code>$ sqlite3 Person.db '.schema RKFace' | grep -v TRIGGER | tr , \\n
 CREATE TABLE RKFace (modelId integer primary key autoincrement
  uuid varchar
@@ -189,8 +209,11 @@ CREATE TABLE RKFace (modelId integer primary key autoincrement
  isHiddenInGroups integer);
 CREATE INDEX RKFace_uuid_index on RKFace(uuid);
 CREATE INDEX RKFace_personId_index on RKFace(personId);
-CREATE INDEX RKFace_imageId_index on RKFace(imageId);</code></pre>
+CREATE INDEX RKFace_imageId_index on RKFace(imageId);
+</code></pre>
+
 <p>Bingo! Promising column names that look like facial coordinates such as <code>leftEyeX</code> and image sizes. What&rsquo;s missing is something resembling a bounding box for the face. But there is the ambigously named <code>size</code> column. I&rsquo;m guessing that&rsquo;s the radius or diameter about <code>(centerX, centerY)</code> of a face. With these assumptions lets <code>SELECT</code> a record to take a closer look. The <code>-line</code> option is key to generating readable output with this many fields vs the default column layout.</p>
+
 <pre><code>$ sqlite3 -line Person.db 'select * from RKFace limit 1'
            modelId = 1
               uuid = WG3y7TXURKa2zPkNz7P3tg
@@ -231,12 +254,18 @@ masterSourceHeight = 4000
       masterMouthX = 0.394833333333333
       masterMouthY = 0.35175
         nameSource = 0
-  isHiddenInGroups = 0</code></pre>
+  isHiddenInGroups = 0
+</code></pre>
+
 <p>All the X, Y coordinates are decimals in the range 0-1 implying a normalized coordinate space. That means one corner should be (0,0) and the opposite diagonal (1,1). Mapping to pixels is just a matter of scaling by the height and width.<sup class="footnote-ref" id="fnref:coords"><a href="#fn:coords">1</a></sup></p>
 
 <p>Next step is to find the actual image file associated with this face record. The <code>imageId</code> field looks like a SQL foriegn key to another table, especially since it&rsquo;s an indexed column based on the <code>.schema</code> output</p>
-<pre><code>CREATE INDEX RKFace_imageId_index on RKFace(imageId);</code></pre>
+
+<pre><code>CREATE INDEX RKFace_imageId_index on RKFace(imageId);
+</code></pre>
+
 <p>The question is, which table should be <code>JOIN</code>-ed against? Lets start by looking at an <code>RKMaster</code> record from <code>Library.apdb</code> given the name aligns with the <code>Masters/</code> directory.</p>
+
 <pre><code>$ sqlite3 -line Library.apdb 'SELECT * FROM RKMaster LIMIT 1'
                    modelId = 1
                       uuid = LnGAi0CuSr+vPGWunW26tA
@@ -278,22 +307,31 @@ masterSourceHeight = 4000
 imageTimeZoneOffsetSeconds = -28800
           photoStreamTagId = NULL
               mediaGroupId = NULL
-    hasCheckedMediaGroupId = 1</code></pre>
+    hasCheckedMediaGroupId = 1
+</code></pre>
+
 <p>Sure enough, there&rsquo;s an <code>imagePath</code> field with a relative filename string. Furthermore, it matches one of the images in the <code>tree</code> output of the <code>Masters/</code> directory <a href="#tree-masters">above</a>. We&rsquo;re on the right track.</p>
 
 <p>Now to use <code>RKFace.imageId</code> to find the matching <code>RKMaster</code> record. <code>RKMaster.uuid</code> is the same length with a similar set of random alpha-numeric characters.<sup class="footnote-ref" id="fnref:uuids"><a href="#fn:uuids">2</a></sup></p>
-<pre><code>$ sqlite3 Library.apdb "SELECT count(*) FROM RKMaster WHERE uuid = '49RT+c2xRB6yWYs8attNuA'"
+
+<pre><code>$ sqlite3 Library.apdb &quot;SELECT count(*) FROM RKMaster WHERE uuid = '49RT+c2xRB6yWYs8attNuA'&quot;
 count(*)
-0</code></pre>
+0
+</code></pre>
+
 <p>No records so <code>RKFace.imageId</code> isn&rsquo;t a foreign key to <code>RKMaster</code>. Given the small database and lack of another table to check we&rsquo;ll resort to a brute force search. That&rsquo;ll rely on the sqlite <code>.dump</code> command which outputs raw SQL commands that can reconstruct an exact clone of a given database. Piping the result through <code>grep</code> with our given id should find the record.</p>
+
 <pre><code>$ sqlite3 Library.apdb .dump | grep '49RT+c2xRB6yWYs8attNuA'
 INSERT INTO RKVersion VALUES(6,'49RT+c2xRB6yWYs8attNuA',1,NULL,NULL,499659066.52122598075,0,0,NULL,0,-1,0,0,NULL,0,2,'UNADJUSTEDNONRAW','DSC00004.JPG',0,496452726,NULL,-25200,NULL,0,499659066.52122802356,1,'xoCatkSMRueQxFJSb1kxpw',6,NULL,'xoCatkSMRueQxFJSb1kxpw','GMT-0700',0,0,1,4000,6000,4000,6000,NULL,0,NULL,NULL,NULL,NULL,NULL,4,0,NULL,NULL,NULL,1,NULL,NULL,NULL,4,0,NULL,NULL,32,0,'H8M6+2XgSYaziE9rUY2WdQ',0,NULL,1,'UNADJUSTEDNONRAW',NULL,'UNADJUSTEDNONRAW',NULL,NULL,NULL,NULL,NULL,NULL,2,0);
 $ sqlite3 Library.apdb '.schema RKVersion' | tr , \\n | head -3
 CREATE TABLE RKVersion (modelId integer primary key autoincrement
  uuid varchar
- orientation integer</code></pre>
+ orientation integer
+</code></pre>
+
 <p>So, <code>RKVersion</code> is the table we&rsquo;re after and it&rsquo;s second column is also named <code>uuid</code>. Lets cleanup the output and determine how to join it with <code>RKMaster</code>.</p>
-<pre><code>$ sqlite3 -line Library.apdb "SELECT * FROM RKVersion WHERE uuid = '49RT+c2xRB6yWYs8attNuA'"
+
+<pre><code>$ sqlite3 -line Library.apdb &quot;SELECT * FROM RKVersion WHERE uuid = '49RT+c2xRB6yWYs8attNuA'&quot;
                         modelId = 6
                            uuid = 49RT+c2xRB6yWYs8attNuA
                     orientation = 1
@@ -368,28 +406,37 @@ faceDetectionRotationFromMaster = NULL
    videoCpImageDisplayTimescale = NULL
          videoCpVisibilityState = NULL
       colorSpaceValidationState = 2
-                  momentSortIdx = 0</code></pre>
+                  momentSortIdx = 0
+</code></pre>
+
 <p>About a third of the way through the 76! fields there&rsquo;s <code>masterUuid</code>. A quick test proves this can be used as the join key to get the file path we&rsquo;ve been looking for all along. Since this is a longer query we pipe it via <code>stdin</code> which sqlite reads if no commands are passed.</p>
+
 <pre><code>$ cat q.sql
 SELECT v.uuid, v.masterUuid, m.imagePath
 FROM RKVersion v
 JOIN RKMaster m ON m.uuid = v.masterUuid
 WHERE v.uuid = '49RT+c2xRB6yWYs8attNuA'
-$ sqlite3 -line Library.apdb < q.sql
+$ sqlite3 -line Library.apdb &lt; q.sql
       uuid = 49RT+c2xRB6yWYs8attNuA
 masterUuid = xoCatkSMRueQxFJSb1kxpw
- imagePath = 2016/11/01/20161101-021106/DSC00004.JPG</code></pre>
+ imagePath = 2016/11/01/20161101-021106/DSC00004.JPG
+</code></pre>
+
 <p>Now that we understand the schema, we can piece it all together. There&rsquo;s one last problem to solve, joining records across two database files. AFAIK, this isn&rsquo;t possible in sqlite directly. One approach is using the <code>.dump</code> command on each database and concatenating the output SQL. That can be piped back into sqlite to create a new merged database file. This could be slow depending on the size of your photo library and machine specs.</p>
-<pre><code>$ sqlite3 Person.db | grep -v sqlite_master >person.sql
-$ sqlite3 Library.apdb | grep -v sqlite_master >library.sql
-$ cat person.sql library.sql | sqlite merged.db</code></pre>
+
+<pre><code>$ sqlite3 Person.db | grep -v sqlite_master &gt;person.sql
+$ sqlite3 Library.apdb | grep -v sqlite_master &gt;library.sql
+$ cat person.sql library.sql | sqlite merged.db
+</code></pre>
+
 <p>Armed with the unified database we can get a table of images, sizes and face locations.</p>
+
 <pre><code>$ cat faces.sql
 SELECT m.imagePath, f.sourceWidth, f.sourceHeight, f.centerX, f.centerY, f.size
 FROM RKFace f
 JOIN RKVersion v ON v.uuid = f.imageId
 JOIN RKMaster m ON m.uuid = v.masterUuid
-$ sqlite3 -csv merged.db < faces.sql | head
+$ sqlite3 -csv merged.db &lt; faces.sql | head
 imagePath,sourceWidth,sourceHeight,centerX,centerY,size
 2016/11/01/20161101-021106/DSC00004.JPG,6000,4000,0.397666666666667,0.39475,0.108
 2016/11/01/20161101-021106/DSC00004.JPG,6000,4000,0.6905,0.4475,0.222
@@ -399,7 +446,9 @@ imagePath,sourceWidth,sourceHeight,centerX,centerY,size
 2016/11/01/20161101-021106/DSC00007.JPG,4000,6000,0.554,0.6655,0.301
 2016/11/01/20161101-021106/DSC00008.JPG,6000,4000,0.379333333333333,0.50375,0.308
 2016/11/01/20161101-021106/DSC00009.JPG,4000,6000,0.471,0.517666666666667,0.599666666666667
-2016/11/01/20161101-021106/DSC00011.JPG,6000,4000,0.405833333333333,0.4635,0.261</code></pre>
+2016/11/01/20161101-021106/DSC00011.JPG,6000,4000,0.405833333333333,0.4635,0.261
+</code></pre>
+
 <p>You can see that a couple of these images have two faces detected in them. I&rsquo;m planning a follow-up post that&rsquo;ll go into more detailed usage of this data. It will revolve around the <a href="https://github.com/neilpa/phace"><code>phace</code></a> package mentioned in the intro. The goal of that tool is to support automatic extraction of facial recognition data and the option to embed it directly in image files.</p>
 
 <p>Hopefully you&rsquo;ve learned something new about &ldquo;reverse engineering&rdquo; unknown data formats. It can be roughly summarized in 3 easy steps:</p>
@@ -425,7 +474,7 @@ imagePath,sourceWidth,sourceHeight,centerX,centerY,size
 
 </main>
 
-<footer></footer>
+<footer><small>&copy; neilpa.me 2014 - 2020</small></footer>
 
 </body>
 </html>
