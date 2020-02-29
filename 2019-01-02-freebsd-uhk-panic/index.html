@@ -1,26 +1,28 @@
-<!DOCTYPE html>
+<!doctype html>
 <html dir="ltr" lang="en">
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-  <meta http-equiv="Content-Language" content="en" />
-  <meta content="width=device-width, initial-scale=1" name="viewport">
-  <title>Fixing FreeBSD kernel panic with UHK keyboard</title>
-  <link rel="stylesheet" href="style.css" type="text/css" media="screen" />
-  
-</head>
-<body>
-  <header>
-    <h1><a href="/"><em>#</em> neilpa.me</a></h1>
-  </header>
-  
-<h2>Fixing FreeBSD kernel panic with UHK keyboard</h2>
-<h3 class="published"><time datetime="2019-01-02T00:00:00Z">2019/01/02</time></h3>
 
-<p>I&rsquo;ve been using FreeBSD on and off as my desktop OS for a couple months (after ~5 years on OSX/macOS). Overall, I like the simplicity and design of the system. However, there&rsquo;s been a non-trivial amount of hacking and debugging to get some things working.</p>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta http-equiv="Content-Language" content="en" />
+<meta content="width=device-width, initial-scale=1" name="viewport">
+<title>Fixing FreeBSD kernel panic with UHK keyboard</title>
+<link rel="stylesheet" href="/style.css" type="text/css" media="screen" />
+
+</head>
+
+<body>
+
+<header>
+  <h1><a href="/"><em>#</em> neilpa.me</a></h1>
+</header>
+
+<main>
+  <h2>Fixing FreeBSD kernel panic with UHK keyboard</h2>
+  <h3 class="published"><time datetime="2019-01-02">2019-01-02</time></h3>
+  <p>I&rsquo;ve been using FreeBSD on and off as my desktop OS for a couple months (after ~5 years on OSX/macOS). Overall, I like the simplicity and design of the system. However, there&rsquo;s been a non-trivial amount of hacking and debugging to get some things working.</p>
 
 <p>Most recently I discovered that my new <a href="https://ultimatehackingkeyboard.com/">UHK keyboard</a> causes a kernel panic when booting. Early in the boot process I was greeted with the following message (stack addresses omitted).</p>
-
-<pre><code>ACPI APIC Table: &lt;DELL   CBX3   &gt;
+<pre><code>ACPI APIC Table: <DELL   CBX3   >
 panic: AP #1 (PHY# 1) failed!
 cpuid = 0
 KDB: stack backtrace:
@@ -32,9 +34,7 @@ KDB: stack backtrace:
 #5 0x... at mp_start+0xa4
 #6 0x... at mi_startup+0x118
 #7 0x... at btext+0x2c
-Uptime: 1s
-</code></pre>
-
+Uptime: 1s</code></pre>
 <p>Trying different USB ports didn&rsquo;t resolve the issue. Searching the forums and mailing lists turned up <a href="https://lists.freebsd.org/pipermail/freebsd-stable/2012-June/068490.html">this thread</a> with a similar stack trace and circumstance. Thankfully, the <a href="https://lists.freebsd.org/pipermail/freebsd-stable/2012-August/069125.html">penultimate</a> and <a href="https://lists.freebsd.org/pipermail/freebsd-stable/2012-August/069151.html">last message</a> had more details about the offending code, including an alternative fix:</p>
 
 <blockquote>
@@ -44,12 +44,8 @@ Uptime: 1s
 <p>I&rsquo;d yet to build a custom kernel, let alone patch it, but it was pretty simple thanks to the <a href="https://www.freebsd.org/doc/handbook/kernelconfig-building.html">handbook</a>.</p>
 
 <p>Checkout the sources matching your install if you don&rsquo;t already have a local copy</p>
-
-<pre><code># svnlite checkout https://svn.FreeBSD.org/base/stable/11 /usr/src
-</code></pre>
-
+<pre><code># svnlite checkout https://svn.FreeBSD.org/base/stable/11 /usr/src</code></pre>
 <p>After finding and patching the &ldquo;broken&rdquo; code in <code>sys/x86/x86/mp_x86.c</code></p>
-
 <pre><code># svnlite diff
 Index: sys/x86/x86/mp_x86.c
 ===================================================================
@@ -68,18 +64,17 @@ Index: sys/x86/x86/mp_x86.c
 -
  	/*
  	 * next we do a STARTUP IPI: the previous INIT IPI might still be
- 	 * latched, (P5 bug) this 1st STARTUP would then terminate
-</code></pre>
-
+ 	 * latched, (P5 bug) this 1st STARTUP would then terminate</code></pre>
 <p>Now we can build, install and reboot into the newly fixed kernel.</p>
-
 <pre><code># make -j 12 buildkernel KERNCONF=GENERIC
 # make installworld KERNCONF=GENERIC
-# shutdown -r now
-</code></pre>
-
+# shutdown -r now</code></pre>
 <p>And sure enough that fixed the issue. This was a quick and fun way to try out some kernel hacking.</p>
 
-  <footer></footer>
+</main>
+
+<footer></footer>
+
 </body>
 </html>
+
