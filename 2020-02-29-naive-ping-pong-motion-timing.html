@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta http-equiv="Content-Language" content="en" />
+  <meta content="width=device-width, initial-scale=1" name="viewport">
+  <title>Naive ping-pong motion timing</title>
+  <link rel="stylesheet" href="style.css" type="text/css" media="screen" />
+  
+</head>
+<body>
+  <header>
+    <h1><a href="/"><em>#</em> neilpa.me</a></h1>
+  </header>
+  <h2>Naive ping-pong motion timing</h2>
+<h3 class="published"><time datetime="2020-02-29T00:00:00Z">2020/02/29</time></h3>
+
+<p>The &ldquo;ping-pong&rdquo; in the title is catchy but a misnomer. The following derives the travel
+time across a line segment with max speed and acceleration. Starting from one of the
+endpoints and reversing direction at the opposite produces ping-pong-esque motion when
+repeated, hence the title.</p>
+
+<blockquote>
+<p><em>Note: Assumes max speed is actually reached but is easily adapted otherwise</em></p>
+</blockquote>
+
+<p>(0) This was derived from my <code>$DAY_JOB</code><sup class="footnote-ref" id="fnref:day-job"><a href="#fn:day-job">1</a></sup> so let&rsquo;s use real values to motivate the example</p>
+
+<pre><code>D := 1 m = 1000 mm
+V := 100 mm/sec = 6000 mm/min
+A := 50 mm/sec^2
+N := 1000 segments
+</code></pre>
+
+<p>(1) Our total time is then acceleration/deceleration plus max speed time. The former are the same since we&rsquo;re going from 0 =&gt; max speed or max speed =&gt; 0.</p>
+
+<pre><code>T = N * (T_accel + T_cruise + T_decel)
+  = N * (2*T_accel + T_cruise)
+</code></pre>
+
+<p>(2) Time spent accelerating (or decelerating) from <a href="https://en.wikipedia.org/wiki/Equations_of_motion#Constant_translational_acceleration_in_a_straight_line">standard equations of motion</a></p>
+
+<pre><code>v = a*t + v_0
+t = (v - v_0)/a
+</code></pre>
+
+<p>(3) Acceleration distance, plugging in (2) and assuming <code>v_0 = 0</code></p>
+
+<pre><code>d = v_0*t + 1/2*a*t^2
+   = 1/2*a*(v/a)^2
+   = v^2 / 2*a
+</code></pre>
+
+<p>(4) Non acceleration, max speed time</p>
+
+<pre><code>v = (d - d_0)/t
+t = (d - d_0)/v
+</code></pre>
+
+<p>(5) Plugging double (3) as <code>d_0</code></p>
+
+<pre><code>t = (d - 2 * (v^2 / 2*a)) / v
+  = (d - v^2/a) / v
+  = d/v - v/a
+</code></pre>
+
+<p>(6) Plugging (2) and (5) into (1)</p>
+
+<pre><code>T = N * (2*(v/a) + d/v-v/a)
+  = N * (v/a + d/v)
+</code></pre>
+
+<p>Solving (6) explicitly with (0)</p>
+
+<pre><code>T = 1000 * ((100mm/s)/(50mm/s^2) + (1000mm)/(100mm/s))
+  = 1000 * (2s + 10s)
+  = 12000s
+  = 200min
+</code></pre>
+
+<div class="footnotes">
+
+<hr />
+
+<ol>
+<li id="fn:day-job">We make 3D CNC carving machines and the design software for them. I was improving our time estimates to better align with the physics of the motion control. If you&rsquo;re interested in such things <a href="https://boards.greenhouse.io/inventables">we&rsquo;re hiring</a> <a class="footnote-return" href="#fnref:day-job"><sup>[return]</sup></a></li>
+</ol>
+
+</div>
+
+  <footer></footer>
+</body>
+</html>
