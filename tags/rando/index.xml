@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>rando on neilpa.me</title>
+    <link>https://neilpa.me/tags/rando/</link>
+    <description>Recent content in rando on neilpa.me</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 01 Jul 2018 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://neilpa.me/tags/rando/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Un-distracted?</title>
+      <link>https://neilpa.me/2018-07-01-un-distracted/</link>
+      <pubDate>Sun, 01 Jul 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://neilpa.me/2018-07-01-un-distracted/</guid>
+      <description>It&amp;rsquo;s been almost four years since setting up this blog and it&amp;rsquo;s still empty. I&amp;rsquo;m sure living up to that &amp;ldquo;easily distracted&amp;rdquo; tagline.
+I plan to change this and actually make use of this space. I&amp;rsquo;ve got a decent backlog of material in various stages of complete. Hopefully some of it will make for good blog fodder. Assuming I can clean it up for publishing before getting distracted by some new shiny problem.</description>
+    </item>
+    
+    <item>
+      <title>Hello, world!</title>
+      <link>https://neilpa.me/2014-10-26-hello-world/</link>
+      <pubDate>Sun, 26 Oct 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://neilpa.me/2014-10-26-hello-world/</guid>
+      <description>This is my blog. There are many like it, but this one is mine.</description>
+    </item>
+    
+  </channel>
+</rss>

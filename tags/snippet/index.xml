@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>snippet on neilpa.me</title>
+    <link>https://neilpa.me/tags/snippet/</link>
+    <description>Recent content in snippet on neilpa.me</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 29 Feb 2020 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://neilpa.me/tags/snippet/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Default font sizes for HTML headings</title>
+      <link>https://neilpa.me/2020-02-29-html-heading-size-defaults/</link>
+      <pubDate>Sat, 29 Feb 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://neilpa.me/2020-02-29-html-heading-size-defaults/</guid>
+      <description>The first post in a potential series to collect short snippets of web search results. This is an experiment to see if it helps better curate my notes. Also looking to for ways to reduce the barrier for writing/posting.
+h1 { font-size: 2.0em; /*32.0px*/ } h2 { font-size: 1.5em; /*24.0px*/ } h3 { font-size: 1.3em; /*20.8px*/ } h4 { font-size: 1.0em; /*16.0px*/ } h5 { font-size: 0.8em; /*12.8px*/ } h6 { font-size: 0.</description>
+    </item>
+    
+  </channel>
+</rss>

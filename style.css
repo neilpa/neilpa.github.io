@@ -61,6 +61,21 @@ a:link {
   color: #2A5DB0;
 }
 
+/**
+ * List pages
+ **/
+.post-date {
+  font-family: monospace;
+  font-weight: bold;
+  padding-right: 10px;
+  /* HACK: force baseline text alignment across the mixed fonts
+        in the post-listing table */
+  padding-top: 4px
+}
+
+/**
+ * Single pages
+ **/
 p code {
   font-size: 110%;
 }
@@ -81,17 +96,27 @@ p.caution {
   padding: 6px 10px;
 }
 
-.published {
-  /* HACK: an "fix" for the line-height settings */
-  margin-top: -1rem;
-  color: #666
+h1.title {
+  margin: 0;
 }
-
-.post-date {
+.byline time {
   font-family: monospace;
   font-weight: bold;
-  padding-right: 10px;
-  /* HACK: force baseline text alignment across the mixed fonts
-        in the post-listing table */
-  padding-top: 4px
+  color: #666
+}
+.byline ul.taglist {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.byline ul.taglist li.tag {
+  display: inline;
+  background: #ddd;
+  border-radius: 0.2em;
+  padding: 0.2em 0.3em;
+  margin: auto 0.1em;
+  font-size: 0.8em;
+}
+li.tag a {
+  color: #2A5DB0;
 }

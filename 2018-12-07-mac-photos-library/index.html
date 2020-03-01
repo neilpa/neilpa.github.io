@@ -16,10 +16,23 @@
   <nav><a href="/"><em>#</em> neilpa.me</a></nav>
 </header>
 
-<main>
-  <h1>Faces in the macOS photos library</h1>
-  <h2 class="published"><time datetime="2018-12-07">2018‑12‑07</time>
-</time></h2>
+<main class="single">
+  <h1 class="title">Faces in the macOS photos library</h1>
+  <span class="byline" ><time datetime="2018-12-07">2018‑12‑07</time>
+
+    <ul class="taglist">
+      <li class="tag"><a href="/tags/hacking/">hacking</a></li>
+    
+      <li class="tag"><a href="/tags/macos/">macos</a></li>
+    
+      <li class="tag"><a href="/tags/phace/">phace</a></li>
+    
+      <li class="tag"><a href="/tags/photos/">photos</a></li>
+    
+      <li class="tag"><a href="/tags/sqlite/">sqlite</a></li>
+    </ul>
+  </span>
+
   <p>My photo collection is a mess. Getting it under control has proven a challenge in terms of de-dupe, metadata cleanup and just general organization. I&rsquo;ve tried numerous photo management apps and online backup strategies over the years. That&rsquo;s resulted in many different backups scattered across various thumbdrives and SD cards.</p>
 
 <p>One such backup is a snapshot of the <code>*.photoslibrary</code> folder from my MacBook. This is where the builtin Photos.app (formerly iPhoto) stores files and metadata. I mostly used it for syncing photos off my phone, not as an organizing tool. Nevertheless, I wanted to explore what I could extract from the archive beyond image files. In particular, any facial recognition data that was automatically generated since that was a feature of the app.</p>

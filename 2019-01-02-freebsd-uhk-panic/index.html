@@ -16,10 +16,19 @@
   <nav><a href="/"><em>#</em> neilpa.me</a></nav>
 </header>
 
-<main>
-  <h1>Fixing FreeBSD kernel panic with UHK keyboard</h1>
-  <h2 class="published"><time datetime="2019-01-02">2019‑01‑02</time>
-</time></h2>
+<main class="single">
+  <h1 class="title">Fixing FreeBSD kernel panic with UHK keyboard</h1>
+  <span class="byline" ><time datetime="2019-01-02">2019‑01‑02</time>
+
+    <ul class="taglist">
+      <li class="tag"><a href="/tags/freebsd/">freebsd</a></li>
+    
+      <li class="tag"><a href="/tags/hacking/">hacking</a></li>
+    
+      <li class="tag"><a href="/tags/keyboard/">keyboard</a></li>
+    </ul>
+  </span>
+
   <p>I&rsquo;ve been using FreeBSD on and off as my desktop OS for a couple months (after ~5 years on OSX/macOS). Overall, I like the simplicity and design of the system. However, there&rsquo;s been a non-trivial amount of hacking and debugging to get some things working.</p>
 
 <p>Most recently I discovered that my new <a href="https://ultimatehackingkeyboard.com/">UHK keyboard</a> causes a kernel panic when booting. Early in the boot process I was greeted with the following message (stack addresses omitted).</p>

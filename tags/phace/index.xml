@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>phace on neilpa.me</title>
+    <link>https://neilpa.me/tags/phace/</link>
+    <description>Recent content in phace on neilpa.me</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 07 Dec 2018 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://neilpa.me/tags/phace/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Faces in the macOS photos library</title>
+      <link>https://neilpa.me/2018-12-07-mac-photos-library/</link>
+      <pubDate>Fri, 07 Dec 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://neilpa.me/2018-12-07-mac-photos-library/</guid>
+      <description>My photo collection is a mess. Getting it under control has proven a challenge in terms of de-dupe, metadata cleanup and just general organization. I&amp;rsquo;ve tried numerous photo management apps and online backup strategies over the years. That&amp;rsquo;s resulted in many different backups scattered across various thumbdrives and SD cards.
+One such backup is a snapshot of the *.photoslibrary folder from my MacBook. This is where the builtin Photos.app (formerly iPhoto) stores files and metadata.</description>
+    </item>
+    
+  </channel>
+</rss>

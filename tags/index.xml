@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tags on neilpa.me</title>
+    <link>https://neilpa.me/tags/</link>
+    <description>Recent content in Tags on neilpa.me</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 29 Feb 2020 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://neilpa.me/tags/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>css</title>
+      <link>https://neilpa.me/tags/css/</link>
+      <pubDate>Sat, 29 Feb 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://neilpa.me/tags/css/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>html</title>
+      <link>https://neilpa.me/tags/html/</link>
+      <pubDate>Sat, 29 Feb 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://neilpa.me/tags/html/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>math</title>
+      <link>https://neilpa.me/tags/math/</link>
+      <pubDate>Sat, 29 Feb 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://neilpa.me/tags/math/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>note-to-self</title>
+      <link>https://neilpa.me/tags/note-to-self/</link>
+      <pubDate>Sat, 29 Feb 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://neilpa.me/tags/note-to-self/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>physics</title>
+      <link>https://neilpa.me/tags/physics/</link>
+      <pubDate>Sat, 29 Feb 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://neilpa.me/tags/physics/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>snippet</title>
+      <link>https://neilpa.me/tags/snippet/</link>
+      <pubDate>Sat, 29 Feb 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://neilpa.me/tags/snippet/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>freebsd</title>
+      <link>https://neilpa.me/tags/freebsd/</link>
+      <pubDate>Wed, 02 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://neilpa.me/tags/freebsd/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>hacking</title>
+      <link>https://neilpa.me/tags/hacking/</link>
+      <pubDate>Wed, 02 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://neilpa.me/tags/hacking/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>keyboard</title>
+      <link>https://neilpa.me/tags/keyboard/</link>
+      <pubDate>Wed, 02 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://neilpa.me/tags/keyboard/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>macos</title>
+      <link>https://neilpa.me/tags/macos/</link>
+      <pubDate>Fri, 07 Dec 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://neilpa.me/tags/macos/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>phace</title>
+      <link>https://neilpa.me/tags/phace/</link>
+      <pubDate>Fri, 07 Dec 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://neilpa.me/tags/phace/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>photos</title>
+      <link>https://neilpa.me/tags/photos/</link>
+      <pubDate>Fri, 07 Dec 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://neilpa.me/tags/photos/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>sqlite</title>
+      <link>https://neilpa.me/tags/sqlite/</link>
+      <pubDate>Fri, 07 Dec 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://neilpa.me/tags/sqlite/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>rando</title>
+      <link>https://neilpa.me/tags/rando/</link>
+      <pubDate>Sun, 01 Jul 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://neilpa.me/tags/rando/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>
