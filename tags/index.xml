@@ -6,10 +6,37 @@
     <description>Recent content in Tags on neilpa.me</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 29 Feb 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 03 Mar 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://neilpa.me/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>golang</title>
+      <link>https://neilpa.me/tags/golang/</link>
+      <pubDate>Tue, 03 Mar 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://neilpa.me/tags/golang/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>note-to-self</title>
+      <link>https://neilpa.me/tags/note-to-self/</link>
+      <pubDate>Tue, 03 Mar 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://neilpa.me/tags/note-to-self/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>snippet</title>
+      <link>https://neilpa.me/tags/snippet/</link>
+      <pubDate>Tue, 03 Mar 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://neilpa.me/tags/snippet/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>css</title>
@@ -39,29 +66,11 @@
     </item>
     
     <item>
-      <title>note-to-self</title>
-      <link>https://neilpa.me/tags/note-to-self/</link>
-      <pubDate>Sat, 29 Feb 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://neilpa.me/tags/note-to-self/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>physics</title>
       <link>https://neilpa.me/tags/physics/</link>
       <pubDate>Sat, 29 Feb 2020 00:00:00 +0000</pubDate>
       
       <guid>https://neilpa.me/tags/physics/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>snippet</title>
-      <link>https://neilpa.me/tags/snippet/</link>
-      <pubDate>Sat, 29 Feb 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://neilpa.me/tags/snippet/</guid>
       <description></description>
     </item>
     

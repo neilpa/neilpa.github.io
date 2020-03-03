@@ -4,8 +4,33 @@
   
   <url>
     <loc>https://neilpa.me/</loc>
-    <lastmod>2020-02-29T00:00:00+00:00</lastmod>
+    <lastmod>2020-03-03T00:00:00+00:00</lastmod>
     <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://neilpa.me/2020-03-03-go-list-os-and-arch-targets/</loc>
+    <lastmod>2020-03-03T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://neilpa.me/tags/golang/</loc>
+    <lastmod>2020-03-03T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://neilpa.me/tags/note-to-self/</loc>
+    <lastmod>2020-03-03T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://neilpa.me/tags/snippet/</loc>
+    <lastmod>2020-03-03T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://neilpa.me/tags/</loc>
+    <lastmod>2020-03-03T00:00:00+00:00</lastmod>
   </url>
   
   <url>
@@ -34,22 +59,7 @@
   </url>
   
   <url>
-    <loc>https://neilpa.me/tags/note-to-self/</loc>
-    <lastmod>2020-02-29T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://neilpa.me/tags/physics/</loc>
-    <lastmod>2020-02-29T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://neilpa.me/tags/snippet/</loc>
-    <lastmod>2020-02-29T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://neilpa.me/tags/</loc>
     <lastmod>2020-02-29T00:00:00+00:00</lastmod>
   </url>
   

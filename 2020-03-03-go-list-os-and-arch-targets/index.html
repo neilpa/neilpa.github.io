@@ -1,0 +1,92 @@
+<!doctype html>
+<html dir="ltr" lang="en">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta http-equiv="Content-Language" content="en" />
+<meta content="width=device-width, initial-scale=1" name="viewport">
+<title>Go: Listing OS and architecture targets</title>
+<link rel="stylesheet" href="/style.css" type="text/css" media="screen" />
+
+</head>
+
+<body>
+
+<header>
+  <nav><a href="/"><em>#</em> neilpa.me</a></nav>
+</header>
+
+<main class="single">
+  <h1 class="title">Go: Listing OS and architecture targets</h1>
+  <span class="byline" ><time datetime="2020-03-03">2020‑03‑03</time>
+
+    <ul class="taglist">
+      <li class="tag"><a href="/tags/golang/">golang</a></li>
+    
+      <li class="tag"><a href="/tags/note-to-self/">note-to-self</a></li>
+    
+      <li class="tag"><a href="/tags/snippet/">snippet</a></li>
+    </ul>
+  </span>
+
+  <p>Potential values for <code>$GOOS/$GOARCH</code>.</p>
+
+<pre><code>$ go version
+go version go1.13.8 darwin/amd64
+
+$ go tool dist list
+aix/ppc64
+android/386
+android/amd64
+android/arm
+android/arm64
+darwin/386
+darwin/amd64
+darwin/arm
+darwin/arm64
+dragonfly/amd64
+freebsd/386
+freebsd/amd64
+freebsd/arm
+illumos/amd64
+js/wasm
+linux/386
+linux/amd64
+linux/arm
+linux/arm64
+linux/mips
+linux/mips64
+linux/mips64le
+linux/mipsle
+linux/ppc64
+linux/ppc64le
+linux/s390x
+nacl/386
+nacl/amd64p32
+nacl/arm
+netbsd/386
+netbsd/amd64
+netbsd/arm
+netbsd/arm64
+openbsd/386
+openbsd/amd64
+openbsd/arm
+openbsd/arm64
+plan9/386
+plan9/amd64
+plan9/arm
+solaris/amd64
+windows/386
+windows/amd64
+windows/arm
+</code></pre>
+
+<p><a href="https://gist.github.com/asukakenji/f15ba7e588ac42795f421b48b8aede63#gistcomment-2686782">source</a></p>
+
+</main>
+
+<footer><small>&copy; neilpa.me 2014 - 2020</small></footer>
+
+</body>
+</html>
+
