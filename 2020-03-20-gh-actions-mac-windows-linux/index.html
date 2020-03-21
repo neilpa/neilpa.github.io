@@ -1,0 +1,68 @@
+<!doctype html>
+<html dir="ltr" lang="en">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta http-equiv="Content-Language" content="en" />
+<meta content="width=device-width, initial-scale=1" name="viewport">
+<title>Github Actions on Mac, Windows, and Linux</title>
+<link rel="stylesheet" href="/style.css" type="text/css" media="screen" />
+
+</head>
+
+<body>
+
+<header>
+  <nav><a href="/"><em>#</em> neilpa.me</a></nav>
+</header>
+
+<main class="single">
+  <h1 class="title">Github Actions on Mac, Windows, and Linux</h1>
+  <span class="byline" ><time datetime="2020-03-20">2020‑03‑20</time>
+
+    <ul class="taglist">
+      <li class="tag"><a href="/tags/ci-cd/">ci-cd</a></li>
+    
+      <li class="tag"><a href="/tags/github/">github</a></li>
+    
+      <li class="tag"><a href="/tags/golang/">golang</a></li>
+    
+      <li class="tag"><a href="/tags/note-to-self/">note-to-self</a></li>
+    
+      <li class="tag"><a href="/tags/snippet/">snippet</a></li>
+    </ul>
+  </span>
+
+  <p>Small example of setting up GitHub Actions to run on MacOS, Windows, and
+Linux with <a href="https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#github-hosted-runners">GitHub-hosted runners</a>. In this case
+what a basic checkout, build, and test pass looks like in go.</p>
+
+<pre><code class="language-yaml"># &lt;repo&gt;/.github/workflows/main.yml
+name: CI
+
+on: [push]
+
+jobs:
+  basic:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macos-latest, ubuntu-latest, windows-latest]
+
+    steps:
+    - uses: actions/checkout@v1
+      with:
+        path: ./src/neilpa.me/&lt;package&gt;
+    - name: Build
+      run: go build ./...
+    - name: Test
+      run: go test ./...
+</code></pre>
+
+</main>
+
+<footer><small>&copy; neilpa.me 2014 - 2020</small></footer>
+
+</body>
+</html>
+
