@@ -6,11 +6,7 @@
     <description>Recent content in sqlite on neilpa.me</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 07 Dec 2018 00:00:00 +0000</lastBuildDate>
-    
-	<atom:link href="https://neilpa.me/tags/sqlite/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Fri, 07 Dec 2018 00:00:00 +0000</lastBuildDate><atom:link href="https://neilpa.me/tags/sqlite/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Faces in the macOS photos library</title>
       <link>https://neilpa.me/2018-12-07-mac-photos-library/</link>

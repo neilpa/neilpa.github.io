@@ -1,141 +1,87 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
-  
   <url>
     <loc>https://neilpa.me/</loc>
     <lastmod>2020-03-20T00:00:00+00:00</lastmod>
     <priority>0</priority>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://neilpa.me/tags/ci-cd/</loc>
     <lastmod>2020-03-20T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://neilpa.me/tags/github/</loc>
     <lastmod>2020-03-20T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://neilpa.me/2020-03-20-gh-actions-mac-windows-linux/</loc>
     <lastmod>2020-03-20T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://neilpa.me/tags/golang/</loc>
     <lastmod>2020-03-20T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://neilpa.me/tags/note-to-self/</loc>
     <lastmod>2020-03-20T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://neilpa.me/tags/snippet/</loc>
     <lastmod>2020-03-20T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://neilpa.me/tags/</loc>
     <lastmod>2020-03-20T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://neilpa.me/2020-03-03-go-list-os-and-arch-targets/</loc>
     <lastmod>2020-03-03T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://neilpa.me/tags/css/</loc>
     <lastmod>2020-02-29T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://neilpa.me/2020-02-29-html-heading-size-defaults/</loc>
     <lastmod>2020-02-29T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://neilpa.me/tags/html/</loc>
     <lastmod>2020-02-29T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://neilpa.me/tags/math/</loc>
     <lastmod>2020-02-29T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://neilpa.me/2020-02-29-naive-ping-pong-motion-timing/</loc>
     <lastmod>2020-02-29T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://neilpa.me/tags/physics/</loc>
     <lastmod>2020-02-29T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://neilpa.me/2019-01-02-freebsd-uhk-panic/</loc>
     <lastmod>2019-01-02T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://neilpa.me/tags/freebsd/</loc>
     <lastmod>2019-01-02T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://neilpa.me/tags/hacking/</loc>
     <lastmod>2019-01-02T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://neilpa.me/tags/keyboard/</loc>
     <lastmod>2019-01-02T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://neilpa.me/2018-12-07-mac-photos-library/</loc>
     <lastmod>2018-12-07T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://neilpa.me/tags/macos/</loc>
     <lastmod>2018-12-07T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://neilpa.me/tags/phace/</loc>
     <lastmod>2018-12-07T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://neilpa.me/tags/photos/</loc>
     <lastmod>2018-12-07T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://neilpa.me/tags/sqlite/</loc>
     <lastmod>2018-12-07T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://neilpa.me/tags/rando/</loc>
     <lastmod>2018-07-01T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://neilpa.me/2018-07-01-un-distracted/</loc>
     <lastmod>2018-07-01T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://neilpa.me/2014-10-26-hello-world/</loc>
     <lastmod>2014-10-26T00:00:00+00:00</lastmod>
   </url>
-  
 </urlset>
