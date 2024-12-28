@@ -3,8 +3,20 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://neilpa.me/</loc>
-    <lastmod>2020-03-20T00:00:00+00:00</lastmod>
+    <lastmod>2024-12-28T00:00:00+00:00</lastmod>
     <priority>0</priority>
+  </url><url>
+    <loc>https://neilpa.me/2024-12-28-a-year-in-reading-books-2024/</loc>
+    <lastmod>2024-12-28T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://neilpa.me/tags/books/</loc>
+    <lastmod>2024-12-28T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://neilpa.me/tags/rando/</loc>
+    <lastmod>2024-12-28T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://neilpa.me/tags/</loc>
+    <lastmod>2024-12-28T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://neilpa.me/tags/ci-cd/</loc>
     <lastmod>2020-03-20T00:00:00+00:00</lastmod>
@@ -22,9 +34,6 @@
     <lastmod>2020-03-20T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://neilpa.me/tags/snippet/</loc>
-    <lastmod>2020-03-20T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://neilpa.me/tags/</loc>
     <lastmod>2020-03-20T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://neilpa.me/2020-03-03-go-list-os-and-arch-targets/</loc>
@@ -74,9 +83,6 @@
   </url><url>
     <loc>https://neilpa.me/tags/sqlite/</loc>
     <lastmod>2018-12-07T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://neilpa.me/tags/rando/</loc>
-    <lastmod>2018-07-01T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://neilpa.me/2018-07-01-un-distracted/</loc>
     <lastmod>2018-07-01T00:00:00+00:00</lastmod>
