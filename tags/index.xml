@@ -26,15 +26,6 @@
     </item>
     
     <item>
-      <title>rando</title>
-      <link>https://neilpa.me/tags/rando/</link>
-      <pubDate>Mon, 29 Dec 2025 00:00:00 +0000</pubDate>
-      
-      <guid>https://neilpa.me/tags/rando/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>ci-cd</title>
       <link>https://neilpa.me/tags/ci-cd/</link>
       <pubDate>Fri, 20 Mar 2020 00:00:00 +0000</pubDate>
@@ -175,6 +166,15 @@
       <pubDate>Fri, 07 Dec 2018 00:00:00 +0000</pubDate>
       
       <guid>https://neilpa.me/tags/sqlite/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>rando</title>
+      <link>https://neilpa.me/tags/rando/</link>
+      <pubDate>Sun, 01 Jul 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://neilpa.me/tags/rando/</guid>
       <description></description>
     </item>
     
